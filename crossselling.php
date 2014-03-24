@@ -35,7 +35,7 @@ class CrossSelling extends Module
 	{
 		$this->name = 'crossselling';
 		$this->tab = 'front_office_features';
-		$this->version = 0.8;
+		$this->version = 0.9;
 		$this->author = 'PrestaShop';
 		$this->need_instance = 0;
 
@@ -44,6 +44,7 @@ class CrossSelling extends Module
 
 		$this->displayName = $this->l('Cross-selling');
 		$this->description = $this->l('Adds a "Customers who bought this product also bought..." section to every product page.');
+		$this->ps_versions_compliancy = array('min' => '1.5.6.1', 'max' => _PS_VERSION_);
 	}
 
 	public function install()
