@@ -215,6 +215,7 @@ class CrossSelling extends Module
 	 */
 	public function hookProductFooter($params)
 	{
+		$context = Context::getContext();
 		$cache_id = 'crossselling|productfooter|'.(int)$params['product']->id;
 		if (!$this->isCached('crossselling.tpl', $this->getCacheId($cache_id)))
 		{
@@ -242,10 +243,14 @@ class CrossSelling extends Module
 				}
 
 				$order_products = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS(
-					'SELECT DISTINCT od.product_id, pl.name, pl.link_rewrite, p.reference, i.id_image, product_shop.show_price, cl.link_rewrite category, p.ean13
+					'SELECT DISTINCT od.product_id, pl.name, pl.link_rewrite, p.reference, i.id_image, product_shop.show_price, cl.link_rewrite category, p.ean13, stock.out_of_stock, IFNULL(stock.quantity, 0) as quantity
 					FROM '._DB_PREFIX_.'order_detail od
 					LEFT JOIN '._DB_PREFIX_.'product p ON (p.id_product = od.product_id)
-					'.Shop::addSqlAssociation('product', 'p').'
+					'.Shop::addSqlAssociation('product', 'p').
+					(Combination::isFeatureActive() ? 'LEFT JOIN `'._DB_PREFIX_.'product_attribute` pa
+					ON (p.`id_product` = pa.`id_product`)
+					'.Shop::addSqlAssociation('product_attribute', 'pa', false, 'product_attribute_shop.`default_on` = 1').'
+					'.Product::sqlStock('p', 'product_attribute_shop', false, $context->shop) :  Product::sqlStock('p', 'product', false, Context::getContext()->shop)).'
 					LEFT JOIN '._DB_PREFIX_.'product_lang pl ON (pl.id_product = od.product_id'.Shop::addSqlRestrictionOnLang('pl').')
 					LEFT JOIN '._DB_PREFIX_.'category_lang cl ON (cl.id_category = product_shop.id_category_default'.Shop::addSqlRestrictionOnLang('cl').')
 					LEFT JOIN '._DB_PREFIX_.'image i ON (i.id_product = od.product_id)
@@ -270,6 +275,7 @@ class CrossSelling extends Module
 						$order_product['displayed_price'] = Product::getPriceStatic((int)$order_product['product_id'], true, null);
 					elseif (Configuration::get('CROSSSELLING_DISPLAY_PRICE') && $tax_calc == 1)
 						$order_product['displayed_price'] = Product::getPriceStatic((int)$order_product['product_id'], false, null);
+					$order_product['allow_oosp'] = Product::isAvailableWhenOutOfStock((int)$order_product['out_of_stock']);
 				}
 
 				$this->smarty->assign(
