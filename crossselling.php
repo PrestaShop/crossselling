@@ -192,6 +192,7 @@ class CrossSelling extends Module
 				$tax_calc = Product::getTaxCalculationMethod();
 				foreach ($order_products as &$order_product)
 				{
+					$order_product['id_product'] = (int)$order_product['product_id'];
 					$order_product['image'] = $this->context->link->getImageLink($order_product['link_rewrite'], (int)$order_product['product_id'].'-'.(int)$order_product['id_image'], ImageType::getFormatedName('home'));
 					$order_product['link'] = $this->context->link->getProductLink((int)$order_product['product_id'], $order_product['link_rewrite'], $order_product['category'], $order_product['ean13']);
 					if (Configuration::get('CROSSSELLING_DISPLAY_PRICE') && ($tax_calc == 0 || $tax_calc == 2))
@@ -273,6 +274,7 @@ class CrossSelling extends Module
 				$tax_calc = Product::getTaxCalculationMethod();
 				foreach ($order_products as &$order_product)
 				{
+					$order_product['id_product'] = (int)$order_product['product_id'];
 					$order_product['image'] = $this->context->link->getImageLink($order_product['link_rewrite'], (int)$order_product['product_id'].'-'.(int)$order_product['id_image'], ImageType::getFormatedName('home'));
 					$order_product['link'] = $this->context->link->getProductLink((int)$order_product['product_id'], $order_product['link_rewrite'], $order_product['category'], $order_product['ean13']);
 					if (Configuration::get('CROSSSELLING_DISPLAY_PRICE') && ($tax_calc == 0 || $tax_calc == 2))
