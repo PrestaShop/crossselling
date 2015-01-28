@@ -181,14 +181,14 @@ class CrossSelling extends Module
 					LEFT JOIN '._DB_PREFIX_.'category_lang cl ON (cl.id_category = product_shop.id_category_default'
 						.Shop::addSqlRestrictionOnLang('cl').')
 					LEFT JOIN '._DB_PREFIX_.'image i ON (i.id_product = od.product_id)
-					'.$sql_groups_join.'
+					'.(Combination::isFeatureActive() ? $sql_groups_join : '').'
 					WHERE od.id_order IN ('.$list.')
 					AND pl.id_lang = '.(int)$this->context->language->id.'
 					AND cl.id_lang = '.(int)$this->context->language->id.'
 					AND od.product_id NOT IN ('.$list_product_ids.')
 					AND i.cover = 1
 					AND product_shop.active = 1
-					'.$sql_groups_where.'
+					'.(Combination::isFeatureActive() ? $sql_groups_where : '').'
 					ORDER BY RAND()
 					LIMIT '.(int)Configuration::get('CROSSSELLING_NBR').'
 				'
@@ -276,14 +276,14 @@ class CrossSelling extends Module
 					LEFT JOIN '._DB_PREFIX_.'category_lang cl ON (cl.id_category = product_shop.id_category_default'
 						.Shop::addSqlRestrictionOnLang('cl').')
 					LEFT JOIN '._DB_PREFIX_.'image i ON (i.id_product = od.product_id)
-					'.$sql_groups_join.'
+					'.(Group::isFeatureActive() ? $sql_groups_join : '').'
 					WHERE od.id_order IN ('.$list.')
 					AND pl.id_lang = '.(int)$this->context->language->id.'
 					AND cl.id_lang = '.(int)$this->context->language->id.'
 					AND od.product_id != '.(int)$params['product']->id.'
 					AND i.cover = 1
 					AND product_shop.active = 1
-					'.$sql_groups_where.'
+					'.(Group::isFeatureActive() ? $sql_groups_where : '').'
 					ORDER BY RAND()
 					LIMIT '.(int)Configuration::get('CROSSSELLING_NBR')
 				);
