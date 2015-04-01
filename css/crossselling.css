@@ -11,8 +11,6 @@
 #crossselling ul {list-style-type:none}
 #crossselling li {
 	float:left;
-	margin: 0 8px;
-    padding: 0 5px;
 }
 #crossselling li a.lnk_img {display:block}
 #crossselling li a img {border:1px solid #ccc}
@@ -20,8 +18,8 @@
 
 #crossselling_list {
 	float: left;
-    overflow: hidden;
-    width: 96%;
+	overflow: hidden;
+	width: 100%;
 }
 
 #crossselling_scroll_left,
