@@ -42,6 +42,7 @@
 					{else}
 						<br />
 					{/if}
+					<p>{$orderProduct.description_short|strip_tags:'UTF-8'|truncate:50:'...'}</p>
 					<!-- <a title="{l s='View' mod='crossselling'}" href="{$orderProduct.link}" class="button_small">{l s='View' mod='crossselling'}</a><br /> -->
 				</li>
 				{/foreach}
