@@ -29,7 +29,7 @@ if (!defined('_PS_VERSION_'))
 
 class CrossSelling extends Module
 {
-	private $html;
+	protected $html;
 
 	public function __construct()
 	{
