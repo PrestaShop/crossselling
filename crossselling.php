@@ -216,7 +216,6 @@ class CrossSelling extends Module
 
 				$this->smarty->assign(
 					array(
-						'order' => (count($products_id) > 1 ? true : false),
 						'orderProducts' => $final_products_list,
 						'middlePosition_crossselling' => round(count($final_products_list) / 2, 0),
 						'crossDisplayPrice' => Configuration::get('CROSSSELLING_DISPLAY_PRICE')
@@ -310,7 +309,6 @@ class CrossSelling extends Module
 
 				$this->smarty->assign(
 					array(
-						'order' => false,
 						'orderProducts' => $final_products_list,
 						'middlePosition_crossselling' => round(count($final_products_list) / 2, 0),
 						'crossDisplayPrice' => Configuration::get('CROSSSELLING_DISPLAY_PRICE')
