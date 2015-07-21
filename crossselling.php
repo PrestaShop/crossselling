@@ -125,15 +125,16 @@ class CrossSelling extends Module
 		if (!$params['products'])
 			return;
 
-		$cache_id = 'crossselling|shoppingcart|'.(int)$params['products'];
+		$products_id = array();
+		foreach ($params['products'] as $product)
+		{
+			$products_id[] = (int)$product['id_product'];
+		}
+
+		$cache_id = 'crossselling|shoppingcart|'.implode('|', $products_id);
 
 		if (!$this->isCached('crossselling.tpl', $this->getCacheId($cache_id)))
 		{
-			$products_id = array();
-			foreach ($params['products'] as $product)
-			{
-				$products_id[] = (int)$product['id_product'];
-			}
 			$q_orders = 'SELECT o.id_order
 			FROM '._DB_PREFIX_.'orders o
 			LEFT JOIN '._DB_PREFIX_.'order_detail od ON (od.id_order = o.id_order)
