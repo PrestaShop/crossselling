@@ -129,22 +129,15 @@ class CrossSelling extends Module
 
 		if (!$this->isCached('crossselling.tpl', $this->getCacheId($cache_id)))
 		{
-			$q_orders = 'SELECT o.id_order
-			FROM '._DB_PREFIX_.'orders o
-			LEFT JOIN '._DB_PREFIX_.'order_detail od ON (od.id_order = o.id_order)
-			WHERE o.valid = 1 AND (';
-			$nb_products = count($params['products']);
-			$i = 1;
 			$products_id = array();
 			foreach ($params['products'] as $product)
 			{
-				$q_orders .= 'od.product_id = '.(int)$product['id_product'];
-				if ($i < $nb_products)
-					$q_orders .= ' OR ';
-				++$i;
 				$products_id[] = (int)$product['id_product'];
 			}
-			$q_orders .= ')';
+			$q_orders = 'SELECT o.id_order
+			FROM '._DB_PREFIX_.'orders o
+			LEFT JOIN '._DB_PREFIX_.'order_detail od ON (od.id_order = o.id_order)
+			WHERE o.valid = 1 AND od.product_id IN ('.implode(',', $products_id).')';
 			$orders = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS($q_orders);
 
 			if (count($orders))
