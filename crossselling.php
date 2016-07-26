@@ -45,7 +45,7 @@ class CrossSelling extends Module
 
         $this->displayName = $this->l('Cross-selling');
         $this->description = $this->l('Adds a "Customers who bought this product also bought..." section to every product page.');
-        $this->ps_versions_compliancy = array('min' => '1.5.6.1', 'max' => _PS_VERSION_);
+        $this->ps_versions_compliancy = array('min' => '1.5.6.1', 'max' => '1.6.99.99');
     }
 
     public function install()
